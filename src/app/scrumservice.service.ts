@@ -108,7 +108,32 @@ export class ScrumserviceService {
       );
   }
 
-  addGoal() {}
+  addGoal() {
+    this.http
+      .post(
+        "http://127.0.0.1:8000/scrum/api/scrumgoal/",
+        JSON.stringify({
+          username: this.username,
+          password: this.password,
+          name: this.goal_name
+        }),
+        this.httpOptions
+      )
+      .subscribe(
+        data => {
+          if (data["exit"] == 0) {
+            this.users = data["data"];
+            this.message = data["message"];
+            this.goal_name = "";
+          }
+        },
+        err => {
+          console.log(err);
+          this.message = "Unexpected Error";
+          this.goal_name = "";
+        }
+      );
+  }
 
   logout() {
     this.username = "";
