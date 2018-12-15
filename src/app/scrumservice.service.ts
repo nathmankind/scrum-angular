@@ -111,7 +111,7 @@ export class ScrumserviceService {
   addGoal() {
     this.http
       .post(
-        "http://127.0.0.1:8000/scrum/api/scrumgoal/",
+        "http://127.0.0.1:8000/scrum/api/scrumgoals/",
         JSON.stringify({
           username: this.username,
           password: this.password,
