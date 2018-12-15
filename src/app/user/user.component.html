@@ -1,0 +1,31 @@
+<h2>Create New User</h2>
+<h3>{{ scrumservice.message }}</h3>
+
+<form name="userForm" (ngSubmit)="createUser()">
+  <label for="full_name">Full Name: </label>
+  <input type="text" name="full_name" id="full_name" [(ngModel)]="scrumservice.createuser_fullname">
+  <br>
+  <label for="username">Username: </label>
+  <input type="text" name="username" id="username" placeholder="Enter username" [(ngModel)]="scrumservice.createuser_username">
+  <br>
+  <label for="age">Age: </label>
+  <input type="number" name="age" id="age" [(ngModel)]="scrumservice.createuser_age">
+  <br>
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password" [(ngModel)]="scrumservice.createuser_password">
+  <br>
+  <label for="rtpassword">Confirm Password</label>
+  <input type="password" name="rtpassword" id="rtpassword" [(ngModel)]="scrumservice.createuser_rtpassword">
+  <br>
+  <label for="user-type">User Type</label>
+  <select name="user-type" id="user-type" [(ngModel)]="scrumservice.createuser_usertype">
+    <option value="admin">Admin</option>
+    <option value="developer">Developer</option>
+    <option value="quality-assurance">Quality Assurance</option>
+    <option value="owner">Owner</option>
+  </select>
+  <br>
+  <input type="submit" value="Create User">
+</form>
+<br>
+<button (click)='toLogin()'>Back to Login</button>

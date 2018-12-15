@@ -1,0 +1,14 @@
+<h1>Login</h1>
+
+<h3>{{ scrumservice.message }}</h3>
+<form name="userForm" (ngSubmit)="login()">
+  <label for="username">Name:</label>
+  <input type="text" name="username" [(ngModel)]="scrumservice.login_username" />
+  <br>
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password" [(ngModel)]="scrumservice.login_password">
+  <br>
+  <button type="submit">Submit</button>
+</form>
+<p>Username is: {{ scrumservice.username }}</p>
+<button (click)='toUser()'>Create a new user</button>
