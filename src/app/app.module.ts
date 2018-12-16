@@ -13,10 +13,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
 
 
+import { DragulaModule } from "ng2-dragula";
+
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, UserComponent, HomeComponent, ProfileComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, DragulaModule.forRoot()],
   providers: [ScrumserviceService],
   bootstrap: [AppComponent]
 })

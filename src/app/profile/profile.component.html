@@ -50,7 +50,7 @@
     <th class="full-box">Remove</th>
   </div>
   <ng-container *ngFor="let user of scrumservice.users">
-    <div style="display:table-row" *ngFor="let goal of user.scrumgoal_set; let j = index; let k = count">
+    <div style="display:table-row" *ngFor="let goal of user.scrumgoal_set; let j = index; let k = count" dragula="mainTable">
       <td *ngIf="j == 0" [attr.rowspan]="k" class="full-box">{{user.nickname}}</td>
       <div *ngFor="let arrItem of arrCount" [ngClass]="j == 0 ? 'top-box' : 'reg-box'" [innerText]="goal.status == arrItem ? goal.id + ') ' + goal.name : '-'"></div>
       <div [ngClass]="j == 0? 'top-box':'reg-box'">-</div>

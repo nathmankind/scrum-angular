@@ -4,6 +4,7 @@ import { LoginComponent } from "./login/login.component";
 import { UserComponent } from "./user/user.component";
 import { HomeComponent } from "./home/home.component";
 import { ProfileComponent } from "./profile/profile.component";
+import { DragulaModule } from "ng2-dragula";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -14,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), DragulaModule],
 
   exports: [RouterModule]
 })
