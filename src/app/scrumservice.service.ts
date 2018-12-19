@@ -30,7 +30,6 @@ export class ScrumserviceService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-
   //SIGN UP METHOD FOR CREATING NEW USER USING A POST METHOD AND SENDING A JSON RESPONSE TO THE API
   createUser() {
     this.http
@@ -68,7 +67,6 @@ export class ScrumserviceService {
         }
       );
   }
-
 
   //LOGIN METHOD FOR USER LOGIN
   login() {
@@ -147,4 +145,8 @@ export class ScrumserviceService {
     this.message = "Thank you for using scrum";
     this.router.navigate(["login"]);
   }
+
+  moveGoal(goal_id, to_id) {}
+
+  changeOwner(from_id, to_id) {}
 }
