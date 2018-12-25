@@ -20,14 +20,14 @@ export class ScrumserviceService {
   public createuser_usertype;
 
   public username;
-  public password;
   public role;
   public users;
+  public authOptions;
 
-  private httpOptions = {
+  public httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
-  authOptions: { headers: HttpHeaders };
+  // authOptions: { headers: HttpHeaders };
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -82,11 +82,12 @@ export class ScrumserviceService {
       )
       .subscribe(
         data => {
+          sessionStorage.setItem("username", this.login_username);
+          sessionStorage.setItem("role", data["role"]);
+          sessionStorage.setItem("token", data["token"]);
           this.username = this.login_username;
-          this.password = this.login_password;
           this.role = data["role"];
-          this.users = data["data"];
-          this.message = data["message"];
+          this.message = "Welcome";
           this.router.navigate(["profile"]);
           this.login_username = "";
           this.login_password = "";
@@ -99,19 +100,14 @@ export class ScrumserviceService {
           };
         },
         err => {
-          if (err["status"]) {
+          if (err["status"] == 400) {
             this.message = "Login Failed: Invalid Credentials.";
           } else {
             this.message = "Login Failed: Unexpected Error!";
           }
-          this.message = "Login failed. Unexpected error";
           console.error(err);
-          this.username = "";
-          this.password = "";
-          this.role = "";
           this.login_username = "";
           this.login_password = "";
-          this.createuser_usertype = "";
         }
       );
   }
@@ -121,23 +117,24 @@ export class ScrumserviceService {
       .post(
         "http://127.0.0.1:8000/scrum/api/scrumgoals/",
         JSON.stringify({
-          username: this.username,
-          password: this.password,
           name: this.goal_name
         }),
-        this.httpOptions
+        this.authOptions
       )
       .subscribe(
         data => {
-          if (data["exit"] == 0) {
-            this.users = data["data"];
-            this.message = data["message"];
-            this.goal_name = "";
-          }
+          this.users = data["data"];
+          this.message = data["message"];
+          this.goal_name = "";
         },
         err => {
           console.log(err);
-          this.message = "Unexpected Error";
+          if (err["status"] == 401) {
+            this.message = "Session Invalid or Expired. Please login";
+            this.logout();
+          } else {
+            this.message = "Unexpected Error";
+          }
           this.goal_name = "";
         }
       );
@@ -145,11 +142,12 @@ export class ScrumserviceService {
 
   logout() {
     this.username = "";
-    this.password = "";
     this.role = "";
     this.users = [];
-    this.message = "Thank you for using scrum";
     this.router.navigate(["login"]);
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("token");
   }
 
   moveGoal(goal_id, to_id) {
@@ -157,23 +155,24 @@ export class ScrumserviceService {
       .patch(
         "http://127.0.0.1:8000/scrum/api/scrumgoals/",
         JSON.stringify({
-          username: this.username,
-          password: this.password,
           goal_id: goal_id,
           to_id: to_id
         }),
-        this.httpOptions
+        this.authOptions
       )
       .subscribe(
         data => {
-          if (data["exit"] == 0) {
-            this.users = data["data"];
-            this.message = data["message"];
-          }
+          this.users = data["data"];
+          this.message = data["message"];
         },
         err => {
           console.log(err);
-          this.message = "Unexpected Error";
+          if (err["status"] == 401) {
+            this.message = "Session Invalid or Expired. Please login";
+            this.logout();
+          } else {
+            this.message = "Unexpected Error";
+          }
         }
       );
   }
@@ -183,23 +182,25 @@ export class ScrumserviceService {
       .put(
         "http://127.0.0.1:8000/scrum/api/scrumgoals/",
         JSON.stringify({
-          username: this.username,
-          password: this.password,
+          mode: 0,
           from_id: from_id,
           to_id: to_id
         }),
-        this.httpOptions
+        this.authOptions
       )
       .subscribe(
         data => {
-          if (data["exit"] == 0) {
-            this.users = data["data"];
-            this.message = data["message"];
-          }
+          this.users = data["data"];
+          this.message = data["message"];
         },
         err => {
-          console.log(err);
-          this.message = "Unexpected Error";
+          console.error(err);
+          if (err["status"] == 401) {
+            this.message = "Session Invalid or Expired. Please login";
+            this.logout();
+          } else {
+            this.message = "Unexpected Error";
+          }
         }
       );
   }

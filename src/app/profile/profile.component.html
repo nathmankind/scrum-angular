@@ -1,10 +1,10 @@
 <h2>Currently logged in as {{ scrumservice.username }} - {{ scrumservice.role }}</h2>
 <button (click)='logout()'>Logout</button>
-<h3>Add Goal</h3>
+<h3><u>Add Task</u></h3>
 <form (ngSubmit)='addGoal()'>
-  <label for="goal">Name: </label>
-  <input type="text" name="goal" id="goal" [(ngModel)]='scrumservice.goal_name'>
-  <input type="submit" value="Add Goal">
+  <textarea rows="4" cols="35" name="goal" id="goal" [(ngModel)]='scrumservice.goal_name'></textarea>
+  <br>
+  <input type="submit" value="Add Task">
 </form>
 <h3>{{scrumservice.message}}</h3>
 
@@ -20,6 +20,7 @@
 
   .top-box {
     display: table-cell;
+    font-size: 10pt;
     vertical-align: middle;
     text-align: center;
     border: 1px solid gray;
@@ -29,6 +30,7 @@
 
   .reg-box {
     display: table-cell;
+    font-size: 10pt;
     text-align: center;
     vertical-align: middle;
     border: 1px solid gray;
@@ -39,7 +41,7 @@
 <div style="display:table;table-layout: fixed; width: 700px;
   word-wrap: break-word; border-collapse: collapse; border: 2px solid black;">
   <div style="display: table-row">
-    <th colspan="6" class="full-box">Available Goal</th>
+    <th colspan="6" class="full-box">Available Task</th>
   </div>
   <div style="display: table-row">
     <th class="full-box">Created By</th>
@@ -50,11 +52,14 @@
     <th class="full-box">Remove</th>
   </div>
   <ng-container *ngFor="let user of scrumservice.users">
+    <div *ngIf="user.scrumgoal_set.length == 0" style="display: table-row;" dragula="mainTable" [attr.id]="'u' + user.id">
+      <td class="full-box" id="author" colspan="6">{{ user.nickname }} - NO TASKS FOR THIS USER</td>
+    </div>
     <div style="display:table-row" *ngFor="let goal of user.scrumgoal_set; let j = index; let k = count" dragula="mainTable"
       [attr.id]="goal.id">
       <td *ngIf="j == 0" [attr.rowspan]="k" class="full-box" id="author">{{user.nickname}}</td>
       <div *ngFor="let arrItem of arrCount" [ngClass]="j == 0 ? 'top-box' : 'reg-box'" [innerText]="goal.status == arrItem ? goal.id + ') ' + goal.name : '-'"
-        [attr.id]="goal.status == arrItem ? arrItem : 'blank'"></div>
+        [attr.id]="goal.status == arrItem ? arrItem : 'blank'" (click)="goal.status == arrItem ? editGoal($event) : doNothing() "></div>
       <div [ngClass]="j == 0? 'top-box':'reg-box'" id="remove">-</div>
     </div>
   </ng-container>
